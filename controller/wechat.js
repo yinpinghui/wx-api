@@ -4,7 +4,7 @@ var wechat = require('wechat');
 var ejs = require('ejs');
 var VIEW_DIR = path.join(__dirname, '..', 'views');
 var config = require('../wxconfig');
-var logger = require("../logger");
+var logger = null;//require("../logger");
 //var oauth = new wechat.OAuth(config.appid, config.appsecret);
 
 var List = require('wechat').List;
@@ -24,7 +24,11 @@ exports.callback = function (req, res) {
   });
 };
 */
-exports.reply = wechat(config, wechat.text(function (message, req, res) {
+exports.reply = wechat({
+	 token: 'zhugejinrong',
+	  appid: 'wxe96824a93bb80cb2',
+	  encodingAESKey: 'LNVKHBk92gfaI5yhotH4ikp5GiKNXO8p1pJhwFNNs0R'
+	}, wechat.text(function (message, req, res,next) {
   // message为内容
   // { ToUserName: 'gh_d3e07d51b513',
   // FromUserName: 'oPKu7jgOibOA-De4u8J2RuNKpZRw',
@@ -43,7 +47,9 @@ exports.reply = wechat(config, wechat.text(function (message, req, res) {
 		}]);
 		return;
 	}
-	
+	if (input === '大王') {
+	  return res.reply("不要叫我大王，要叫我女王大人啊……");
+	}
 	if (input.length < 2) {
 		return res.reply('内容太少，请多输入一点:)');
 	}

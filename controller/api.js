@@ -5,9 +5,8 @@ var log=bunyan.createLogger({name:'api'});
 wechat.post("/template",function(req,res){
 	var data = req.body;
 	console.log(JSON.stringify(data));
-	var templateId = '';
-	res.end("send");
-	api.sendTemplate(puling, templateId, url, data, function (err, result, res) {
+	//res.end("send");
+	api.sendTemplate(data.touser, data.template_id, data.url, data.data, function (err, result, resinner) {
         if (!err) {
         	log.error(err)
         	res.end("fail");
@@ -17,3 +16,4 @@ wechat.post("/template",function(req,res){
         }
       });
 })
+exports.wechat = wechat;

@@ -1,6 +1,7 @@
 var express = require("express");
 var app = express();
 var config = require("./wxconfig");
+var bodyParser = require('body-parser');
 var connect = require("connect");
 var fs = require('fs');
 var redis   = require('redis');
@@ -25,11 +26,12 @@ function refreshToken(){
 }
 /*从代码上看，真正的refresh是发生在lib内部实现的，而不是需要手工进行的，所以通过一个url进行刷新的可能性不是很大*/
 refreshToken();
-
+app.use(bodyParser.json()); // for parsing application/json
+app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(express.query());
-app.use('/assets', connect.static(__dirname + '/assets', { maxAge: 86400000 }));
+//app.use('/assets', connect.static(__dirname + '/assets', { maxAge: 86400000 }));
 //app.use(connect.cookieParser());
-app.use(connect.session({secret: 'zhugelicaiweixin', cookie: {maxAge: 60000}}));
+//app.use(connect.session({secret: 'zhugelicaiweixin', cookie: {maxAge: 60000}}));
 
 
 
@@ -43,10 +45,9 @@ app.use(connect.session({secret: 'zhugelicaiweixin', cookie: {maxAge: 60000}}));
  * 6. 可以界面更新对client的key
  * 7. 
  */
-
-app.use('/wechat', require("./controller/wechat"));
-app.use('/api', require("./controller/api"));
-app.use('/admin', require("./controller/admin"));
+app.use('/wechat', require("./controller/wechat").reply);
+app.use('/api', require("./controller/api").wechat);
+//app.use('/admin', require("./controller/admin"));
 
 app.use('/', function (req, res) {
 	res.writeHead(200);

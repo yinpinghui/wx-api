@@ -13,13 +13,15 @@
   "author": "ian",
   "license": "ISC",
   "dependencies": {
+    "body-parser": "^1.14.1",
     "bunyan": "^1.5.1",
-    "cron": "^1.0.9",
+    "connect": "^3.4.0",
     "ejs": "^2.3.4",
     "express": "^4.13.3",
     "redis": "^2.3.0",
+    "request": "^2.67.0",
     "wechat": "^2.0.3",
-    "wechat-api": "^1.20.0",
+    "wechat-api": "^1.22.0",
     "wechat-enterprise": "^0.1.1"
   }
 }
