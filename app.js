@@ -1,7 +1,22 @@
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
-var logger = require('morgan');
+var bunyan = require('bunyan');
+
+var logger = bunyan.createLogger({
+    name: "wxlog",                     // logger name
+    serializers: {
+        req: bunyan.stdSerializers.req,     // standard bunyan req serializer
+        err: bunyan.stdSerializers.err      // standard bunyan error serializer
+    },
+    streams: [{
+        type: 'rotating-file',
+        path: '/var/log/wx-api.log',
+        period: '1d',   // daily rotation
+        count: 60        // keep 60 back copies
+    }]
+});
+
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
@@ -10,16 +25,17 @@ var mp = require('./routes/mp');
 
 var app = express();
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'hjs');
-
-// uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+app.use('/', function (req, res, next) {
+    req.log = logger;
+    next();
+});
+
 
 app.use('/', routes);
 app.use('/mp', mp);
