@@ -70,6 +70,7 @@ app.use(function (err, req, res, next) {
         error: {}
     });
 });
-
+var loadmchids = require("./service/loadmchids")
+loadmchids(app);
 
 module.exports = app;

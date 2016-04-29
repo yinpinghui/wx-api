@@ -1,0 +1,11 @@
+var _ = require("underscore");
+
+var mch = function(req,res,next){
+    var mchid = req.params.mchid;
+    if (_.contains(mchids, mchid)){
+        next()
+    }else{
+        res.status(403).json({msg:'wrong mchid'})
+    }
+}
+module.exports = mch;
