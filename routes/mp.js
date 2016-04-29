@@ -22,14 +22,14 @@ var api = new WechatAPI(config.wx.appid, config.wx.appSecret, function (callback
   
 });
 
-
+require("./card")(router,api)
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
   res.json({"msg": 'standby'})
 });
 
-router.post("/createCard",function(req,res,next){
+router.post("/card/createCard",function(req,res,next){
     var card = req.body
     api.createCard()
 })
